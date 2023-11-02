@@ -1,0 +1,46 @@
+# // Auto-generated , DO NOT EDIT
+specVersion: 1.0.0
+version: 0.0.1
+name: Dymension-starter
+description: >-
+  This project can be use as a starting point for developing your Cosmos
+  Dymension based SubQuery project
+runner:
+  node:
+    name: '@subql/node-cosmos'
+    version: '>=3.0.0'
+  query:
+    name: '@subql/query'
+    version: '*'
+schema:
+  file: ./schema.graphql
+network:
+  chainId: froopyland_100-1
+  endpoint:
+    - http://209.182.238.19:26657
+  dictionary: http://localhost:26657
+  chaintypes:
+    cosmos.slashing.v1beta1:
+      file: ./proto/cosmos/slashing/v1beta1/tx.proto
+      messages:
+        - MsgUnjail
+    cosmos.gov.v1beta1:
+      file: ./proto/cosmos/gov/v1beta1/tx.proto
+      messages:
+        - MsgVoteWeighted
+    cosmos.gov.v1beta1.gov:
+      file: ./proto/cosmos/gov/v1beta1/gov.proto
+      messages:
+        - WeightedVoteOption
+dataSources:
+  - kind: cosmos/Runtime
+    startBlock: 99169377
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleEvent
+          kind: cosmos/EventHandler
+          filter:
+            type: transfer
+            messageFilter:
+              type: /cosmos.bank.v1beta1.MsgSend
